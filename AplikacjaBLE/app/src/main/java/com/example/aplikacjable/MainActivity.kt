@@ -51,9 +51,12 @@ class MainActivity : ComponentActivity() {
 }
 
 
+
 @Composable
 fun backGround() {
-    var currentPage by remember { mutableStateOf("home") }
+    val currentPage = remember { mutableStateOf("home") }
+    val mainScreen = ControlPanel(currentPage)
+    val display_Screen_of_App = main_Display_Screen_of_Application(currentPage = currentPage)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,33 +83,50 @@ fun backGround() {
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-                when (currentPage){
-                    "home"->displayTextHome(
-                        modifier = Modifier,
-                        imageRes = R.drawable.esp32_s3_devkitc_1_v1_isometric,
-                        textRes = R.string.HomeTitle,
-                        textRes2 = R.string.HomeDescription
-                    )
-                    "info"->displayInfo(
-                        modifier = Modifier,
-                        imageRes = R.drawable.esp32_s3_devkitc_1_n8_wifi_bluetooth_plytka_rozwojowa_z_ukladem_esp32_s3_wroom_11u,
-                        imageRes2 = R.drawable.servo,
-                        textRes = R.string.infoTitle,
-                        textRes2 = R.string.infoDescriptionEsp,
-                        textRes3 = R.string.infoDescriptionSerwo
-                    )
-                    "more"->extraOptions(
-                        modifier = Modifier,
-                        textRes = R.string.singleRegulation,
-                        textRes2 = R.string.fullRegulation,
-                        onClick = {}
-                    )
-                }
-
+                display_Screen_of_App.state_of_main_Screen(currentPage = currentPage)
             }
         }
 
         // Box z przyciskami
+        mainScreen.controlPanelMain()
+        // Dolny Box
+        Box(
+            modifier = Modifier
+                .background(Color(0xFF48D8CF))
+                .fillMaxWidth()
+                .height(30.dp)
+        )
+    }
+}
+
+open class ControlPanel(protected val currentPage: MutableState<String>){
+    @Composable
+    fun buttonsOnGray(modifier: Modifier, imageRes: Int, textRes: Int, onClick: () -> Unit) {
+        Button(
+            onClick = onClick,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(6.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+            shape = RoundedCornerShape(30.dp),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = imageRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp)
+                )
+                Text(
+                    text = stringResource(id = textRes),
+                    fontSize = 20.sp
+                )
+            }
+        }
+    }
+    @Composable
+    fun controlPanelMain(){
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,174 +142,168 @@ fun backGround() {
                     modifier = Modifier.weight(1f),
                     imageRes = R.drawable.info_24dp_1f1f1f,
                     textRes = R.string.InfoText,
-                    onClick = { currentPage = "info"}
+                    onClick = { currentPage.value = "info"}
                 )
                 buttonsOnGray(
                     modifier = Modifier.weight(1f),
                     imageRes = R.drawable.home_24dp_1f1f1f__1_,
                     textRes = R.string.HomeText,
-                    onClick = { currentPage = "home" }
+                    onClick = { currentPage.value = "home" }
                 )
                 buttonsOnGray(
                     modifier = Modifier.weight(1f),
                     imageRes = R.drawable.more_vert_24dp_1f1f1f,
                     textRes = R.string.MoreText,
-                    onClick = { currentPage = "more"} // Kliknięcie zmienia stan
+                    onClick = { currentPage.value = "more"} // Kliknięcie zmienia stan
                 )
             }
         }
-
-        // Dolny Box
-        Box(
-            modifier = Modifier
-                .background(Color(0xFF48D8CF))
-                .fillMaxWidth()
-                .height(30.dp)
-        )
     }
-}
-
-@Composable
-fun buttonsOnGray(modifier: Modifier, imageRes: Int, textRes: Int, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(6.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-        shape = RoundedCornerShape(30.dp),
+    @Composable
+    fun extraOptions(
+        currentPage: MutableState<String>,
+        modifier: Modifier,
+        textRes: Int,
+        textRes2: Int
     ) {
         Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.LightGray),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Button(
+                onClick = { currentPage.value = "singleBLEregulation" },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(Color.White)
+                    .padding(6.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+                shape = RoundedCornerShape(30.dp),
+            ) {
+                Text(
+                    text = stringResource(id = textRes),
+                    fontSize = 30.sp,
+                )
+            }
+            Button(
+                onClick = { currentPage.value = "fullBLEregulation" },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(Color.White)
+                    .padding(6.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+                shape = RoundedCornerShape(30.dp),
+            ) {
+                Text(
+                    text = stringResource(id = textRes2),
+                    fontSize = 30.sp,
+                )
+            }
+        }
+    }
+
+
+}
+
+class main_Display_Screen_of_Application(currentPage: MutableState<String>) : ControlPanel (
+    currentPage
+){
+    @Composable
+    fun state_of_main_Screen(currentPage: MutableState<String>){
+        when (currentPage.value){
+            "home"->displayTextHome(
+                modifier = Modifier,
+                imageRes = R.drawable.esp32_s3_devkitc_1_v1_isometric,
+                textRes = R.string.HomeTitle,
+                textRes2 = R.string.HomeDescription,
+            )
+            "info"->displayInfo(
+                modifier = Modifier,
+                imageRes = R.drawable.esp32_s3_devkitc_1_n8_wifi_bluetooth_plytka_rozwojowa_z_ukladem_esp32_s3_wroom_11u,
+                imageRes2 = R.drawable.servo,
+                textRes = R.string.infoTitle,
+                textRes2 = R.string.infoDescriptionEsp,
+                textRes3 = R.string.infoDescriptionSerwo
+            )
+            "more"->extraOptions(
+                modifier = Modifier,
+                textRes = R.string.singleRegulation,
+                textRes2 = R.string.fullRegulation,
+                currentPage = currentPage
+            )
+        }
+    }
+    @Composable
+    fun displayTextHome(modifier: Modifier, imageRes: Int, textRes: Int, textRes2: Int){
+
+        Column (
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = textRes),
+                fontSize = 27.sp,
+            )
             Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                painter = painterResource( id = imageRes ),
+                modifier = Modifier.size(200.dp),
+                contentDescription = null
             )
-            Text(
-                text = stringResource(id = textRes),
-                fontSize = 20.sp
-            )
-        }
-    }
-}
-
-@Composable
-fun displayTextHome(modifier: Modifier, imageRes: Int, textRes: Int, textRes2: Int){
-
-    Column (
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(id = textRes),
-            fontSize = 27.sp,
-        )
-        Image(
-            painter = painterResource( id = imageRes ),
-            modifier = Modifier.size(200.dp),
-            contentDescription = null
-        )
-        Text(
-            text = stringResource(id = textRes2),
-            fontSize = 20.sp,
-            lineHeight = 40.sp
-        )
-    }
-}
-
-// Funkcja do wyświetlania dodatkowych opcji
-@Composable
-fun extraOptions(
-    modifier: Modifier,
-    onClickSingle: () -> Unit,
-    onClickAll: () -> Unit,
-    textRes: Int,
-    textRes2: Int
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = { /* TODO: Dodamy funkcję później */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .background(Color.White)
-                .padding(6.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-            shape = RoundedCornerShape(30.dp),
-        ) {
-            Text(
-                text = stringResource(id = textRes),
-                fontSize = 30.sp,
-            )
-        }
-        Button(
-            onClick = { /* TODO: Dodamy funkcję później */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .background(Color.White)
-                .padding(6.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-            shape = RoundedCornerShape(30.dp),
-        ) {
             Text(
                 text = stringResource(id = textRes2),
-                fontSize = 30.sp,
+                fontSize = 20.sp,
+                lineHeight = 40.sp
             )
+        }
+    }
+    @Composable
+    fun displayInfo(
+        modifier: Modifier,
+        imageRes: Int,
+        imageRes2: Int,
+        textRes: Int,
+        textRes2: Int,
+        textRes3: Int
+    ){
+        Column (
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = stringResource(id = textRes),
+                fontSize = 27.sp,
+            )
+            Image(
+                painter = painterResource( id = imageRes ),
+                modifier = Modifier.size(200.dp),
+                contentDescription = null
+            )
+            Text(
+                text = stringResource(id = textRes2),
+                fontSize = 20.sp,
+                lineHeight = 40.sp
+            )
+            Image(
+                painter = painterResource( id = imageRes2 ),
+                modifier = Modifier.size(200.dp),
+                contentDescription = null
+            )
+            Text(
+                text = stringResource(id = textRes3),
+                fontSize = 20.sp,
+                lineHeight = 40.sp
+            )
+
         }
     }
 }
 
-@Composable
-fun displayInfo(
-    modifier: Modifier,
-    imageRes: Int,
-    imageRes2: Int,
-    textRes: Int,
-    textRes2: Int,
-    textRes3: Int
-){
-    Column (
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = stringResource(id = textRes),
-            fontSize = 27.sp,
-            )
-        Image(
-            painter = painterResource( id = imageRes ),
-            modifier = Modifier.size(200.dp),
-            contentDescription = null
-            )
-        Text(
-            text = stringResource(id = textRes2),
-            fontSize = 20.sp,
-            lineHeight = 40.sp
-            )
-        Image(
-            painter = painterResource( id = imageRes2 ),
-            modifier = Modifier.size(200.dp),
-            contentDescription = null
-        )
-        Text(
-            text = stringResource(id = textRes3),
-            fontSize = 20.sp,
-            lineHeight = 40.sp
-        )
-
-    }
-}
 @Preview(showBackground = true)
 @Composable
 fun BLEAppPreview() {
