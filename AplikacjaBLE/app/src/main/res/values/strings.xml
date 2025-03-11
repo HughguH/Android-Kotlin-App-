@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">AplikacjaBLE</string>
+    <string name="HomeText">Home</string>
+    <string name="InfoText">Info</string>
+    <string name="MoreText">More</string>
+    <string name="HomeTitle">Witaj na stronie tytułowej😊\n </string>
+    <string name="HomeDescription"><![CDATA[
+    Tutaj znajdują się podstawowe informacje o projekcie,oraz o celu projektu.\n
+    Jeżeli chcesz więcej informacji o specyfikacji technicznej kliknij przycisk INFO.\n
+    Jeżeli z kolei chciałbyś/chciałabyś wyregulować protezę proszę włączyć BLE na telefonie,
+    i kliknąć MORE, powinny wyskoczyć 2 opcje do wyboru regulacja pojedyncza oraz całkowita,
+    w przypadku pojedynczej należy będzie wpisać mięsień który jest wadliwie wyregulowany
+    (całość już w funkcji będzie opisana).\n
+    Celem projektu jest przede wszystkim pomoc tym którzy znaleźli się w cięzkiej
+    sytuacji życiowej, jaką jest utrata kończyny. Mimo iż na rynku istnieje wiele protez ,
+    nie są one dostępne dla każdego, głownym czynnikiem jest cena takiej protezy.\n
+    Podstawowa proteza ręki , imitująca rękę ale tylko wyglądowo potrafi kosztować w granicach 2 tysięcy
+    ( nie posiadając żadnej funkcjonalności). \nProtezy kinetyczne w granicach 10 do 15 tysięcy złotych,
+    z kolei mioelektryczne 60 do 100 tysięcy, a największym szaleństwem z tego są bioniczne
+    potrafiące mieć cenę w wysokości setków tysięcy złotych. \nDlatego przychodzimy my z rozwiązaniem,
+    zrobienie funkcjonalnej protezy dostępnej dla zwykłego szarego człowieka.
+    Mamy nadzieję iż produkt jest zadowalający, liczymy na treściwy feedback ,
+    oraz miłego korzystania z protezy 😁.
+]]></string>
+    <string name="infoTitle">
+        Informacje o produkcie
+    </string>
+    <string name="infoDescriptionEsp"><![CDATA[
+    Wersja protezy z której obecnie korzystasz jest wypozażona w:\n
+    ESP32-S3-DevKitC-1 with ESP32-S3-WROOM-1 Module, składającym się z procesoru
+    Xtensa® dual-core 32-bit LX7 ,posiada on dwa rdzenie o taktowaniu 240Mhz, również posiada\n
+    ROM: 384 KB\n
+    SRAM: 512 KB\n
+    SRAM in RTC: 16 KB\n
+        ]]></string>
+    <string name="infoDescriptionSerwo"><![CDATA[
+    W projekcie zostały użyte serwomechanizmy firmy Feetech model : F5109M .
+    Serwomechanizmy te są w stanie uzyskać moment obrotowy wynoszący
+    ponad 14 kg na serwo!!\n
+    Daje to maksymalną łączną siłę uścisku protezy wynoszącą 70kg(o ponad 20kg więcej niż
+    średni mężczyzna , oraz ponad 41kg więcej niż średnia siła chytu kobiety).\n
+    Taka siła znacznie przewyższa średnią osobę\n
+    Więc pamiętaj że z wielką siłą wiąże się wielka odpowiedzialność 😁
+        ]]></string>
+    <string name="infoDescriptionRest"><![CDATA[
+
+        ]]></string>
+    <string name="singleRegulation">Pojedyncza regulacja</string>
+    <string name="fullRegulation">Regulacja wszystkiego</string>
+</resources>
